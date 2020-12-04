@@ -10,7 +10,8 @@ STATUS_SUCCESS = 'SUCCESS'
 
 class Message:
     __slots__ = ('device_token', 'notification', 'data', 'priority',
-                 'message_id', 'time_to_live', 'collapse_key')
+                 'message_id', 'time_to_live', 'collapse_key',
+                 'content_available')
 
     def __init__(
             self,
@@ -20,7 +21,8 @@ class Message:
             priority: Optional[str] = None,
             message_id: Optional[str] = None,
             time_to_live: Optional[int] = None,
-            collapse_key: Optional[str] = None):
+            collapse_key: Optional[str] = None,
+            content_available: Optional[bool] = None):
 
         self.device_token = device_token
         self.notification = notification
@@ -29,6 +31,7 @@ class Message:
         self.message_id = message_id or str(uuid4())
         self.time_to_live = time_to_live
         self.collapse_key = collapse_key
+        self.content_available = content_available
 
     def as_dict(self) -> Dict[str, Any]:
         result = dict(
@@ -37,7 +40,7 @@ class Message:
         )
 
         for field in ('notification', 'data', 'priority', 'time_to_live',
-                      'collapse_key'):
+                      'collapse_key', 'content_available'):
             value = getattr(self, field, None)
             if value is not None:
                 result[field] = value
